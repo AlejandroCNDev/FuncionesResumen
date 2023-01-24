@@ -7,14 +7,13 @@ from algoritmoYuval import *
 def help():
     print("Diplaying Help. Options available")
     print("python {*.py} -h --Help  => Display Help ")
-    print("python {*.py} -a --Algorithm  => Choose the Hash Algorithm, only valid these values (crc32,md5,sha) (Default: sha)")
-    print("python {*.py} -n --NumberExperiments  => The number of experiments to do. (Default: 20)")
-    print("python {*.py} -b --BitsHash  => The number of bits of Hash to use. (Default: 32)")
+    print("python {*.py} -a --Algorithm  => Choose the Hash Algorithm, only valid these values (crc32,md5,sha)")
+    print("python {*.py} -n --NumberExperiments  => The number of experiments to do.")
+    print("python {*.py} -b --BitsHash  => The number of bits of Hash to use. ")
     print("Obligatory to use the following arguments: -anb")
 
 
 def main():
-
     argumentList = sys.argv[1:]
 
     # Options (anb requires an argument, thats why it has :)
@@ -24,7 +23,6 @@ def main():
     long_options = ["help", "Help", "Algorithm=","algorithm=", "Experiments=", "experiments=", "Bits Hash= ", "bits=", "bitsHash=",""]
 
     try:
-
         if (len(sys.argv) == 1):
            help()
            raise ValueError("Se requieren más argumentos")
@@ -44,17 +42,16 @@ def main():
 
             if currentArgument in ("-h", "--help"):
                 help()
+                return 0
+
             elif currentArgument in ("-a", "--algorithm"):
                 algorithm = currentValue.lower()
-                if algorithm == "crc32":
-                        print("You can become a web developer.")
-                elif algorithm == "sha":
-                        print("You can become a Data Scientist")
-                elif algorithm == "md5":
-                        print("You can become a backend developer")
+                if algorithm == "crc32" or "sha" or "md5":
+                    print("Algorithm used:", algorithm)
                 else:
                         raise ValueError("The algorithm was not found. (only is valid crc32,md5,sha)")
-                print("Algorithm used:", algorithm)
+
+                
             elif currentArgument in ("-n", "--numberexperiments"):
                 if not currentValue.isnumeric():
                     raise TypeError('Work with Positive Numbers Only')
@@ -67,31 +64,38 @@ def main():
                 print(("Number of Bits of Hash to use: (% s)") % (currentValue))
                 bitshash = currentValue
 
+        successfull_experiments = {}
+        times_experiments = []
+
+        print("#################################################################")
+        print("#################################################################")
+        print("#################################################################\n")
+        for i in range(int(numberexperiments)):
+            print("#################################################################")
+            print("######################" + " Experimento " + str(i) + " ############################\n")
+
+            # Para calcular el tiempo de ejecución
+            ini_time = time.time()
+            test = algoritmoYuval(algorithm, bitshash)
+            ok = test.algoritmoYuval()
+            successfull_experiments[i] = "".join("ok")
+            fin_time = time.time()
+            timeOneExperiment = fin_time - ini_time
+            times_experiments.append(timeOneExperiment)
+            print("\nEl tíempo de ejecución del programa " + str(timeOneExperiment) + "\n")
+
+        print("#################################################################")
+        print("La media obtenida de los experimentos es: " + str(np.average(times_experiments)))
+        print("La varianza obtenida de los experimentos es: " + str(np.var(times_experiments)))
+        print("La desviación tipica obtenida de los experimentos es: " + str(np.std(times_experiments)))
+
+        print(successfull_experiments)
 
     except getopt.error as err:
         print(str(err))
         help()
 
-    successfull_experiments = {}
-    times_experiments = []
 
-    for i in range(int(numberexperiments)):
-        # Para calcular el tiempo de ejecución
-        ini_time = time.time()
-        test = algoritmoYuval(algorithm, bitshash)
-        ok = test.algoritmoYuval()
-        successfull_experiments[i] = "".join("ok")
-        fin_time = time.time()
-        timeOneExperiment = fin_time - ini_time
-        times_experiments.append(timeOneExperiment)
-        print("El tíempo de ejecución del programa " + str(timeOneExperiment))
-
-
-    print("La media obtenida de los experimentos es: " + str(np.average(times_experiments)))
-    print("La varianza obtenida de los experimentos es: " + str(np.var(times_experiments)))
-    print("La desviación tipica obtenida de los experimentos es: " + str(np.std(times_experiments)))
-
-    print(successfull_experiments)
 
 if __name__ == "__main__":
     main()

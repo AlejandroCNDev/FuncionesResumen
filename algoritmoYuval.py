@@ -149,9 +149,35 @@ class algoritmoYuval:
     # Modificaciones menores del mensaje legitimo
     def modificacionMenoresMl(self, m_2):
 
-        if m_2 == 16:
-            """
-            ml1 = ["Hi, ", "Good Morning, "]
+        if m_2 ==14:
+
+            ml1 = ["Hello, ", "Good Morning, "]
+            ml2 = ["It is my pleasure to contact you today to inform you of the opportunity we have for you. ",
+                   "It is a privilege to contact you to let you know about the incredible opportunity we have for you. "]
+            ml3 = ["You´ve proven to be a reliable person for us, ",
+                   "You´ve reaffirmed that you are a person we can trust, "]
+            ml4 = ["and I know that you will be able to help us make this innovative project a success. ",
+                   "and I know that you will be able to make our future project a success. "]
+            ml5 = ["I am writing to you ", "I am sending you this email  "]
+            ml6 = ["because I have recently become aware of your experience and expertise. ",
+                   "because I have just recently become aware of your experience, skills and knowledge. "]
+            ml7 = ["If they are correct, ", "If they´re true, "]
+            ml8 = ["I would like to offer you ", "I would like to propose you "]
+            ml9 = ["the job in our company. ", "the possibility of a job in the company. "]
+            ml10 = ["Our current salary range ", "Our actual salary range "]
+            ml11 = ["for this type of position is $100,000/year. ", "for this type of role is $500,000/year. "]
+            ml12 = ["Do you accept the agreement? ", "Do you accept the deal? "]
+            ml13 = ["Please let me know as soon as possible, and sign the agreement",
+                    "If so, please let me know as soon as possible, and sign the contract"]
+            ml14 = ["and send it to me. Regards. Sir. Smith ",
+                    "and send it to me at this same e-mail. Best Regards. Sir. John "]
+
+            combinations_ml = list(
+                itertools.product(ml1, ml2, ml3, ml4, ml5, ml6, ml7, ml8, ml9, ml10, ml11, ml12, ml13, ml14))
+
+        elif m_2 == 16:
+
+            ml1 = ["Hello, ", "Good Morning, "]
             ml2 = ["It´s my pleasure to contact you today to inform you of the opportunity we have for you. ",
                    "It´s a privilege to contact you to let you know about the incredible opportunity we have for you. "]
             ml3 = ["You´ve proven to be a reliable person for us, ",
@@ -192,11 +218,12 @@ class algoritmoYuval:
             ml14 = ["and sign the agreement ", "and sign the contract"]
             ml15 = ["and send it to me. ", "and send it to me at this same e-mail."]
             ml16 = ["Regards.", "Best Regards."]
-
+            """
             combinations_ml = list(
                 itertools.product(ml1, ml2, ml3, ml4, ml5, ml6, ml7, ml8, ml9, ml10, ml11, ml12, ml13, ml14, ml15, ml16))
+
         elif m_2 == 18:
-            ml1 = ["Hi, ", "Good Morning, "]
+            ml1 = ["Hello, ", "Good Morning, "]
             ml2 = ["It´s my pleasure to contact you today to inform you of the opportunity we have for you. ",
                    "It´s a privilege to contact you to let you know about the incredible opportunity we have for you. "]
             ml3 = ["You´ve proven to be a reliable person for us, ",
@@ -224,7 +251,7 @@ class algoritmoYuval:
                                   ml17, ml18))
 
         elif m_2 == 20:
-            ml1 = ["Hi, ", "Good Morning, "]
+            ml1 = ["Hello, ", "Good Morning, "]
             ml2 = ["It´s my pleasure to contact you today to inform you of the opportunity we have for you. ",
                    "It´s a privilege to contact you to let you know about the incredible opportunity we have for you. "]
             ml3 = ["You´ve proven to be a reliable person for us, ",
@@ -286,7 +313,7 @@ class algoritmoYuval:
             ml20 = ["Our current salary range ", "Our actual salary range "]
             ml21 = ["for this type of position is $100,000/year. Do you accept the agreement? ",
                     "for this type of role is $200,000/year. Do you accept the deal? "]
-            ml22 = ["Regards.", "Best Regards."]
+            ml22 = ["Regards. Sir. Smith", "Best Regards. Sir. John"]
 
             combinations_ml = list(
                 itertools.product(ml1, ml2, ml3, ml4, ml5, ml6, ml7, ml8, ml9, ml10, ml11, ml12, ml13, ml14, ml15, ml16,
@@ -323,7 +350,8 @@ class algoritmoYuval:
             ml20 = ["Our current salary range ", "Our actual salary range "]
             ml21 = ["for this type of position is $100,000/year. ", "for this type of role is $200,000/year. "]
             ml22 = ["Do you accept the agreement? ", "Do you accept the deal?"]
-            ml23 = ["Please let me know as soon as possible, and sign the agreement and send it to me.", "If so, please let me know as soon as possible, and sign the contract and send it to me at this same e-mail."]
+            ml23 = ["Please let me know as soon as possible, and sign the agreement and send it to me.",
+                    "If so, please let me know as soon as possible, and sign the contract and send it to me at this same e-mail."]
             ml24 = ["Regards.", "Best Regards."]
 
             combinations_ml = list(
@@ -461,9 +489,6 @@ class algoritmoYuval:
 
     def algoritmoYuval(self):
 
-        # Para calcular el tiempo de ejecución
-        # ini_time = time.time()
-
         # 1: Se generan  t = 2^(m/2) modificaciones menores de xl
         m_2 = int(int(self.bits) / 2)  # m/2
         t = int(pow(2, m_2))
@@ -487,17 +512,14 @@ class algoritmoYuval:
         while not collision or i<=2**30:
             try:
                 # 4: Generar x′i modificación menor de xi y computar h(x′i)
-
                 num_bin = (bin(i)[2:].zfill(30)) # Aqui no se que hacer para que se generen muchos t intentos
                 i += 1
+                x = self.modificacionMenoresMi(num_bin)
 
-                x = self.modificacionMenorMi(num_bin)
-
-                #comb = next(combinations_mi)
+                #comb = next(combinations_mi)  #De esta forma es más eficiente, pero consume más memoria, para atacar funciones con mayor numero de bits
                 str_mi = "".join(x)
 
                 bytes_mi = bytes(str_mi, encoding='utf-8')
-
                 h1 = self.generateHash(self.algorithmHash, bytes_mi, self.bits)
 
                 # 5: Buscar si existe x′l tal que h(x′l) = h(x′i)
